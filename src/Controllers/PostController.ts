@@ -60,14 +60,14 @@ async function GetPosts(req: Request, res: Response) {
 async function GetOnePost(req: Request, res: Response) {
   try {
     const data = await prismaDB.posts.findUnique({
-      where: { id: req.body.id },
+      where: { id: req.params.id?.toString() },
     });
 
     if (!data) {
       return res.json("Erro na requisição do post!");
     }
 
-    return res.status(201).json(data);
+    return res.status(200).json(data);
   } catch (error) {
     return res.status(400).json(error);
   }
