@@ -47,7 +47,7 @@ async function CreatePost(req: Request, res: Response) {
 
 async function GetPosts(req: Request, res: Response) {
   try {
-    const data = await prismaDB.admin.findMany({
+    const data = await prismaDB.posts.findMany({
       orderBy: { createdAt: "desc" },
     });
 
@@ -57,4 +57,20 @@ async function GetPosts(req: Request, res: Response) {
   }
 }
 
-export default { CreatePost, GetPosts };
+async function GetOnePost(req: Request, res: Response) {
+  try {
+    const data = await prismaDB.posts.findUnique({
+      where: { id: req.body.id },
+    });
+
+    if (!data) {
+      return res.json("Erro na requisição do post!");
+    }
+
+    return res.status(201).json(data);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+}
+
+export default { CreatePost, GetOnePost, GetPosts };
