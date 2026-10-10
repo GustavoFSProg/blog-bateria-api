@@ -73,4 +73,54 @@ async function GetOnePost(req: Request, res: Response) {
   }
 }
 
-export default { CreatePost, GetOnePost, GetPosts };
+async function Likes(req: Request, res: Response) {
+  try {
+    const id = req.params.id?.toString();
+
+    const data: any = await prismaDB.posts.findFirst({
+      where: { id: req.params.id?.toString() },
+    });
+
+    const NewLikes = data.likes + 1;
+
+    const updateLikes = await prismaDB.posts.update({
+      where: { id: id },
+      data: { likes: NewLikes },
+    });
+
+    if (!data) {
+      return res.json("Erro na requisição do post!");
+    }
+
+    return res.status(200).json(updateLikes);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+}
+
+async function Views(req: Request, res: Response) {
+  try {
+    const id = req.params.id?.toString();
+
+    const data: any = await prismaDB.posts.findFirst({
+      where: { id: req.params.id?.toString() },
+    });
+
+    const NewViews = data.views + 1;
+
+    const updateLikes = await prismaDB.posts.update({
+      where: { id: id },
+      data: { views: NewViews },
+    });
+
+    if (!data) {
+      return res.json("Erro na requisição do post!");
+    }
+
+    return res.status(200).json(updateLikes);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+}
+
+export default { CreatePost, GetOnePost, GetPosts, Likes, Views };

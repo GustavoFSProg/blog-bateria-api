@@ -18,5 +18,7 @@ routes.post("/login", AdminController.Login);
 routes.post("/create-post", multerConfig, PostController.CreatePost);
 routes.get("/get-posts", PostController.GetPosts);
 routes.get("/get-one-post/:id", PostController.GetOnePost);
+routes.put("/likes/:id", PostController.Likes);
+routes.put("/views/:id", PostController.Views);
 
 export default routes;
